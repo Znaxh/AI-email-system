@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<title>Architecture — AI Email Suggested-Response System</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --surface:#ffffff; --surface-2:#fbfcfd;
+    --ink:#131820; --ink-soft:#3a4453; --muted:#5b6575; --faint:#8a94a4;
+    --border:#e4e8ee; --border-strong:#d2d9e2;
+    --transport:#2563eb; --transport-soft:#dbe6ff;
+    --ai:#c26a06; --ai-soft:#fbeacf;
+    --good:#0f7a52; --warn:#b45309;
+    --panel:#0b111b; --panel-line:#1e293b;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 12px 32px -12px rgba(16,24,40,.14);
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --maxw:1080px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#080b11; --surface:#111823; --surface-2:#0d141d;
+      --ink:#e7ecf3; --ink-soft:#c3cdda; --muted:#8b97a8; --faint:#66738699;
+      --border:#202936; --border-strong:#2b3746;
+      --transport:#5b93ff; --transport-soft:#16233c;
+      --ai:#f2a83c; --ai-soft:#38270f;
+      --good:#3fbf8b; --warn:#e0a344;
+      --panel:#080d15; --panel-line:#1a2432;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 20px 40px -20px rgba(0,0,0,.7);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--border-strong) 60%,transparent) 1px,transparent 0);
+    background-size:26px 26px;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(24px,5vw,64px) clamp(18px,4vw,40px) 96px;}
+
+  header{margin-bottom:40px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--muted);display:flex;align-items:center;gap:10px;margin:0 0 18px}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--transport)}
+  h1{font-size:clamp(28px,5vw,46px);line-height:1.06;letter-spacing:-.022em;margin:0 0 16px;
+    font-weight:800;text-wrap:balance;max-width:18ch}
+  .lede{font-size:clamp(15px,2.2vw,18px);color:var(--ink-soft);max-width:64ch;margin:0}
+  .lede code{font-family:var(--mono);font-size:.9em;background:var(--surface);border:1px solid var(--border);
+    padding:1px 6px;border-radius:4px}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:26px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .dot.t{background:var(--transport)} .dot.a{background:var(--ai)}
+  .dot.s{background:var(--good)} .dot.e{border:1.5px dashed var(--faint);background:transparent}
+  .dot.g{background:var(--warn)}
+
+  .badge{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 7px;border-radius:5px;margin-left:9px;font-weight:700;vertical-align:middle}
+  .badge.llm{background:color-mix(in srgb,var(--ai) 16%,transparent);color:var(--ai);
+    border:1px solid color-mix(in srgb,var(--ai) 45%,transparent)}
+  .badge.store{background:color-mix(in srgb,var(--good) 14%,transparent);color:var(--good);
+    border:1px solid color-mix(in srgb,var(--good) 40%,transparent)}
+  .badge.gate{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn);
+    border:1px solid color-mix(in srgb,var(--warn) 40%,transparent)}
+
+  .screen{background:var(--panel);border:1px solid var(--panel-line);border-radius:16px;
+    box-shadow:var(--shadow);overflow:hidden;margin-bottom:28px}
+  .screen-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--panel-line);
+    font-family:var(--mono);font-size:12px;color:#7d8ba0;letter-spacing:.04em}
+  .screen-bar b{color:#c7d2e0;font-weight:600;margin-left:6px}
+  .tl{width:11px;height:11px;border-radius:50%;background:#2b3849;display:inline-block}
+  .diagram{overflow-x:auto;padding:28px 22px}
+  .diagram pre.mermaid{margin:0;text-align:center;min-width:720px}
+
+  .section-h{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);margin:48px 0 6px}
+  .section-t{font-size:clamp(21px,3.4vw,27px);letter-spacing:-.015em;margin:0 0 28px;font-weight:750}
+
+  .paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:40px}
+  .path{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+  .path .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--transport);margin-bottom:8px}
+  .path h3{margin:0 0 6px;font-size:16px;font-weight:700}
+  .path p{margin:0;font-size:13.5px;color:var(--muted)}
+  .path code{font-family:var(--mono);font-size:.9em}
+
+  .stages{position:relative;display:flex;flex-direction:column;gap:14px}
+  .stages::before{content:"";position:absolute;left:calc(clamp(38px,6vw,52px)/2);top:12px;bottom:12px;width:2px;
+    background:linear-gradient(var(--transport),var(--ai),var(--good));opacity:.28}
+  .stage{position:relative;display:grid;grid-template-columns:clamp(38px,6vw,52px) 1fr;gap:clamp(16px,3vw,26px);
+    align-items:start;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:20px clamp(18px,3vw,26px);box-shadow:var(--shadow)}
+  .num{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--surface);
+    background:var(--ink);width:clamp(38px,6vw,52px);height:clamp(38px,6vw,52px);border-radius:11px;
+    display:grid;place-items:center;letter-spacing:-.02em;position:relative;z-index:1}
+  .stage.ai-stage .num{background:var(--ai)}
+  .stage.store-stage .num{background:var(--good)}
+  .stage.gate-stage .num{background:var(--warn)}
+  .stage-body{min-width:0}
+  .stage-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--transport);margin:0 0 2px}
+  .stage.ai-stage .stage-tag{color:var(--ai)}
+  .stage.store-stage .stage-tag{color:var(--good)}
+  .stage.gate-stage .stage-tag{color:var(--warn)}
+  .stage h3{font-size:18px;margin:3px 0 8px;letter-spacing:-.01em;font-weight:700;display:flex;align-items:center;flex-wrap:wrap}
+  .stage p{margin:0 0 14px;color:var(--ink-soft);font-size:14.5px;max-width:68ch}
+  .stage code{font-family:var(--mono);font-size:.92em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface-2);
+    border:1px solid var(--border);border-radius:7px;padding:4px 9px;white-space:nowrap}
+  .stage.ai-stage .chip{border-color:color-mix(in srgb,var(--ai) 30%,var(--border));color:var(--ink-soft)}
+  .stage.store-stage .chip{border-color:color-mix(in srgb,var(--good) 30%,var(--border));color:var(--ink-soft)}
+  .stage.gate-stage .chip{border-color:color-mix(in srgb,var(--warn) 30%,var(--border));color:var(--ink-soft)}
+
+  .formula{font-family:var(--mono);font-size:13px;background:var(--surface-2);border:1px solid var(--border);
+    border-radius:10px;padding:12px 14px;margin:0 0 14px;color:var(--ink-soft);overflow-x:auto}
+
+  .cross{margin-top:56px}
+  .cross-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .cc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+  .cc .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+  .cc h4{margin:0 0 6px;font-size:15.5px;font-weight:700}
+  .cc p{margin:0;font-size:13.5px;color:var(--muted)}
+  .cc code{font-family:var(--mono);font-size:.9em}
+
+  footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--border);
+    font-family:var(--mono);font-size:12.5px;color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+
+  @media (max-width:560px){
+    .stage{grid-template-columns:1fr;gap:12px}
+    .stages::before{display:none}
+    .num{width:40px;height:40px}
+  }
+  .rise{opacity:0;transform:translateY(12px);animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.rise{animation:none;opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="rise">
+    <p class="eyebrow">Reference Architecture · as implemented</p>
+    <h1>AI Email Suggested-Response System</h1>
+    <p class="lede">
+      Repo-accurate map of the Hiver Open Challenge submission: RAG replies grounded in
+      an uploaded <strong>company-data bundle</strong>, scored with <strong>two unblended numbers</strong> —
+      RAGAS response quality (Tier&nbsp;1) and human-feedback reliability (Tier&nbsp;2) — then
+      routed AUTO / REVIEW / ESCALATE / IGNORE. Nothing company-specific lives in
+      <code>src/</code>. Sample fixtures: <code>tests/fixtures/northpeak/</code>
+      (not shipped under <code>data/</code>).
+    </p>
+    <div class="legend">
+      <span><i class="dot t"></i> Transport / control</span>
+      <span><i class="dot a"></i> LLM call</span>
+      <span><i class="dot s"></i> Persist (StructuredStore / BlobStore)</span>
+      <span><i class="dot g"></i> Hard AUTO gate</span>
+      <span><i class="dot e"></i> External connector</span>
+    </div>
+  </header>
+
+  <div class="paths rise" style="animation-delay:.04s">
+    <div class="path">
+      <div class="k">Path A · live</div>
+      <h3>Inbox → Review</h3>
+      <p>Fetch → parse → event bus → classify → generate → RAGAS → route → queue → human feedback. Entry: React UI Inbox / Review (FastAPI <code>/api/*</code>).</p>
+    </div>
+    <div class="path">
+      <div class="k">Path B · batch</div>
+      <h3><code>pipeline.py --all</code></h3>
+      <p>Holdout tickets → generate → RAGAS evaluate → reliability report from <code>feedback_events</code>. No classifier / router / queue.</p>
+    </div>
+    <div class="path">
+      <div class="k">Path C · assist</div>
+      <h3>Assistant page</h3>
+      <p>Paste email → <code>generate_reply</code> only; optional on-demand RAGAS. No routing or queue write.</p>
+    </div>
+  </div>
+
+  <!-- ========== LIVE FLOW DIAGRAM ========== -->
+  <div class="screen rise" style="animation-delay:.06s">
+    <div class="screen-bar"><i class="tl"></i><i class="tl"></i><i class="tl"></i>
+      <b>live-pipeline.mmd</b> — inbox sync signal path</div>
+    <div class="diagram">
+<pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{
+"fontFamily":"monospace","fontSize":"14px",
+"primaryColor":"#131c29","primaryTextColor":"#dbe4f0","primaryBorderColor":"#2f4258",
+"lineColor":"#5b6c84","clusterBkg":"#0d141f","clusterBorder":"#23324a","tertiaryColor":"#0d141f"},
+"flowchart":{"htmlLabels":true,"useMaxWidth":false,"padding":16,"nodeSpacing":28,"rankSpacing":40,"curve":"basis"}}}%%
+flowchart TB
+  subgraph S0["00 · COMPANY DATA"]
+    upload["Settings upload\npolicy · txn · tickets"]
+    ingest["company_data\npreview → dry_run → normalize"]
+    active[("active company bundle\ncompany/active.json")]
+  end
+
+  subgraph S1["01 · INGEST"]
+    inbox["email_source.fetch_unread\ndemo | mcp"]
+  end
+
+  subgraph S2["02 · PARSE"]
+    parse["email_parser.parse\nHTML / quotes / auth_status"]
+  end
+
+  subgraph S3["03 · EVENT BUS"]
+    bus["event_bus.publish → drain\nretry ×3 → dead_letter"]
+  end
+
+  subgraph S4["04 · TRIAGE"]
+    classify["classifier.classify\nLLM · 7 categories"]
+  end
+
+  subgraph S5["05 · CONTEXT"]
+    direction TB
+    intent["intent scope\npolicy categories"]
+    policy["PolicyStore\nBM25 + embeddings + RRF"]
+    tickets["TicketRetriever\nTF-IDF corpus + examples"]
+    txn[("active transactions\n+ missing_fields")]
+  end
+
+  subgraph S6["06 · GENERATE"]
+    gen["generator.generate_reply\nreply + cited_rules + remedy"]
+  end
+
+  subgraph S7["07 · RAGAS TIER-1"]
+    ragas["ragas_evaluator\nfaithfulness · relevancy · context precision"]
+    disagree["dual-pass disagreement\nforced before AUTO"]
+    det["deterministic + per-email\ndata-quality flags"]
+  end
+
+  subgraph S8["08 · ROUTE"]
+    decide["router._decide\nAUTO · REVIEW · ESCALATE · IGNORE"]
+  end
+
+  queue[("queue\nStructuredStore")]
+  scores[("ragas_scores")]
+
+  subgraph S9["09 · REVIEW"]
+    review["Review dashboard"]
+    send["send_reply\ndry-run unless live_send"]
+    fb["feedback.record_feedback"]
+  end
+
+  events[("feedback_events")]
+  rel["reliability\nn + Wilson CI"]
+
+  upload --> ingest --> active
+  active --> policy
+  active --> tickets
+  active --> txn
+  inbox --> parse --> bus --> classify
+  classify -- "other → IGNORE" --> decide
+  classify -- support --> intent
+  intent --> policy
+  intent --> tickets
+  txn --> gen
+  policy --> gen
+  tickets --> gen
+  gen --> ragas
+  ragas --> disagree
+  ragas --> det
+  ragas --> scores
+  disagree --> decide
+  det --> decide
+  decide --> queue --> review
+  review --> send
+  review --> fb --> events --> rel
+
+  classDef ai fill:#2a1e0c,stroke:#e0912f,stroke-width:1.4px,color:#f6d9a8;
+  classDef store fill:#0f2a20,stroke:#3fbf8b,stroke-width:1.4px,color:#c9f3e2;
+  classDef gate fill:#2a1f0c,stroke:#e0a344,stroke-width:1.4px,color:#f6e0b8;
+  classDef ext stroke-dasharray:5 4,stroke:#7d8ba0;
+  class gen,classify,ragas,disagree,ingest ai;
+  class queue,scores,events,txn,active store;
+  class decide,det gate;
+  class inbox,upload ext;
+</pre>
+    </div>
+  </div>
+
+  <!-- ========== BATCH FLOW DIAGRAM ========== -->
+  <div class="screen rise" style="animation-delay:.08s">
+    <div class="screen-bar"><i class="tl"></i><i class="tl"></i><i class="tl"></i>
+      <b>batch-pipeline.mmd</b> — <code>python pipeline.py --all</code></div>
+    <div class="diagram">
+<pre class="mermaid">
+%%{init:{"theme":"base","themeVariables":{
+"fontFamily":"monospace","fontSize":"14px",
+"primaryColor":"#131c29","primaryTextColor":"#dbe4f0","primaryBorderColor":"#2f4258",
+"lineColor":"#5b6c84","clusterBkg":"#0d141f","clusterBorder":"#23324a","tertiaryColor":"#0d141f"},
+"flowchart":{"htmlLabels":true,"useMaxWidth":false,"padding":16,"nodeSpacing":28,"rankSpacing":40,"curve":"basis"}}}%%
+flowchart LR
+  data[("active company bundle\npolicy · txn · tickets")]
+  ingest["company_data\npreview · dry_run · normalize"]
+  ps["PolicyStore\ningest + hybrid index"]
+  tr["TicketRetriever\nfit corpus only"]
+  gen["generate_reply\nholdout tickets"]
+  out1[("generated_replies.json")]
+  ev["evaluate_generated\nRAGAS + diagnostics"]
+  out2[("evaluation_results.json\n+ ragas_scores")]
+  val["validate_metric\nreliability report"]
+  out3[("validation_report.json")]
+
+  ingest --> data
+  data --> ps --> gen
+  data --> tr --> gen
+  gen --> out1 --> ev --> out2 --> val --> out3
+
+  classDef ai fill:#2a1e0c,stroke:#e0912f,stroke-width:1.4px,color:#f6d9a8;
+  classDef store fill:#0f2a20,stroke:#3fbf8b,stroke-width:1.4px,color:#c9f3e2;
+  class gen,ev,ingest ai;
+  class data,out1,out2,out3 store;
+</pre>
+    </div>
+  </div>
+
+  <!-- ========== STEP BY STEP ========== -->
+  <section>
+    <p class="section-h">The live pipeline, step by step</p>
+    <h2 class="section-t">Twelve stages — every module that runs on Sync Inbox</h2>
+
+    <div class="stages">
+
+      <div class="stage rise">
+        <div class="num">01</div>
+        <div class="stage-body">
+          <p class="stage-tag">ingest · external</p>
+          <h3>Fetch unread mail</h3>
+          <p><code>src/email_source.py · fetch_unread()</code> — one connector interface.
+            <code>demo</code> is offline (empty inbox by default; dry-run sends);
+            <code>mcp</code> is an MCP client to a Gmail (or any) MCP server. Tools are
+            auto-mapped by capability; Settings holds the server URL + token.</p>
+          <div class="chips"><span class="chip">demo | mcp</span><span class="chip">IncomingEmail[]</span></div>
+        </div>
+      </div>
+
+      <div class="stage rise">
+        <div class="num">02</div>
+        <div class="stage-body">
+          <p class="stage-tag">normalize</p>
+          <h3>Parse &amp; verify</h3>
+          <p><code>src/email_parser.py · parse()</code> — strips HTML, truncates quoted-reply /
+            signature blocks, collapses whitespace, folds smart punctuation. Surfaces
+            <code>auth_status</code> (<code>pass</code> / <code>fail</code> / <code>unavailable</code>)
+            from a provider <code>Authentication-Results</code> header when present —
+            never fabricates a pass. Classification and generation always see one shape.</p>
+          <div class="chips"><span class="chip">html_stripped</span><span class="chip">quote_stripped</span><span class="chip">auth_status</span></div>
+        </div>
+      </div>
+
+      <div class="stage store-stage rise">
+        <div class="num">03</div>
+        <div class="stage-body">
+          <p class="stage-tag">isolation · StructuredStore</p>
+          <h3>Event bus <span class="badge store">persist</span></h3>
+          <p><code>src/event_bus.py</code> — <code>publish()</code> enqueues each parsed email
+            (idempotent on <code>email_id</code>); <code>drain(process_fn)</code> runs each
+            inside its own try/except. Failure retries up to 3× then moves to
+            <code>dead_letter</code>. One bad email never blocks the rest of a sync.
+            Manual paste on the Inbox page skips the bus and calls the router directly.</p>
+          <div class="chips"><span class="chip">table: event_bus</span><span class="chip">retry ×3</span><span class="chip">dead-letter</span></div>
+        </div>
+      </div>
+
+      <div class="stage ai-stage rise">
+        <div class="num">04</div>
+        <div class="stage-body">
+          <p class="stage-tag">triage · LLM</p>
+          <h3>Classify <span class="badge llm">LLM</span></h3>
+          <p><code>src/classifier.py · classify()</code> — LLM triage via
+            <code>purpose="classify"</code> (<code>CLASSIFY_LLM_*</code>). Categories:
+            refund · cancellation · complain · billing · technical_support · general_inquiry ·
+            <strong>other</strong>. <code>other</code> ⇒ IGNORE (no generate/eval). If an order
+            ID is present and the model returns <code>other</code>, remapped to
+            <code>general_inquiry</code>. Frustration stays a cheap regex for queue priority only.</p>
+          <div class="chips"><span class="chip">7 categories</span><span class="chip">other → IGNORE</span><span class="chip">frustration regex</span></div>
+        </div>
+      </div>
+
+      <div class="stage rise">
+        <div class="num">05</div>
+        <div class="stage-body">
+          <p class="stage-tag">order + intent</p>
+          <h3>Order lookup &amp; intent scope</h3>
+          <p><code>detect_order_id()</code> finds the first known order in the body (else a
+            placeholder transaction). Intent maps the classifier category onto policy
+            categories (<code>src/intent.py</code> / generator mapping) so retrieval is scoped —
+            plus always-on <code>global</code> escalation rules. Region / as-of date come from
+            the loaded policy when available.</p>
+          <div class="chips"><span class="chip">active transactions</span><span class="chip">category scope</span><span class="chip">global rules</span></div>
+        </div>
+      </div>
+
+      <div class="stage rise">
+        <div class="num">06</div>
+        <div class="stage-body">
+          <p class="stage-tag">retrieval · hybrid</p>
+          <h3>Policy + ticket context</h3>
+          <p><code>src/policy_ingest.py</code> + <code>src/policy_store.py</code> — format-aware
+            ingest (PDF / DOCX / Markdown / txt), structured rules
+            (id · condition · outcome · category · effective date), cached by section
+            content-hash via BlobStore (<code>policy_index/*</code>). Retrieve = BM25 + local
+            sentence-transformers embeddings, fused with Reciprocal Rank Fusion (optional
+            cross-encoder rerank, off by default).</p>
+          <p style="margin-top:8px"><code>src/retriever.py</code> — TF-IDF over past tickets.
+            Batch fits <strong>only</strong> on <code>split=="corpus"</code>. Live UI also
+            includes Settings-managed <code>user_examples</code> (production-only — never the
+            batch eval harness). Past tickets teach <strong>voice/tone only</strong>; they must
+            never override policy.</p>
+          <div class="chips"><span class="chip">BM25 + embeddings + RRF</span><span class="chip">TF-IDF tickets</span><span class="chip">BlobStore cache</span></div>
+        </div>
+      </div>
+
+      <div class="stage ai-stage rise">
+        <div class="num">07</div>
+        <div class="stage-body">
+          <p class="stage-tag">reasoning · LLM</p>
+          <h3>Generate reply + structured remedy <span class="badge llm">LLM</span></h3>
+          <p><code>src/generator.py · generate_reply()</code> — one RAG-prompted call through
+            <code>llm_client.complete(purpose="generate")</code>. Hierarchy in the prompt:
+            <strong>policy determines the remedy</strong>; transaction confirms conditions;
+            past tickets teach voice. Emits <code>reply</code>, <code>cited_rules</code>, and a
+            structured <code>remedy</code>
+            (<code>{remedy_type, remedy_amount, rule_cited, escalate}</code> used later for
+            deterministic edit classification — not for LLM-judged scoring.</p>
+          <div class="chips"><span class="chip">cited_rules</span><span class="chip">remedy.escalate</span><span class="chip">anthropic · openai · mistral · mock</span></div>
+        </div>
+      </div>
+
+      <div class="stage ai-stage rise">
+        <div class="num">08</div>
+        <div class="stage-body">
+          <p class="stage-tag">Tier 1 · automated</p>
+          <h3>RAGAS response quality <span class="badge llm">LLM judges</span></h3>
+          <p><code>src/ragas_evaluator.py</code> + <code>src/evaluator.py</code> — pin
+            <code>ragas==0.4.3</code>. Scores Faithfulness, Answer Relevancy, and
+            ContextPrecisionWithoutReference via
+            <code>ragas.metrics.collections.*.ascore(**kwargs)</code>. Persist each score in
+            the <code>ragas_scores</code> table. Routing-only combo (never shown as a blended
+            “accuracy” headline):</p>
+          <div class="formula">quality_score = 0.5·faithfulness + 0.3·answer_relevancy + 0.2·context_precision</div>
+          <p>Also runs a <strong>sampled dual-pass retrieval disagreement</strong> check
+            (top-k cited rule vs full-document rule extraction). When sampling skips the check,
+            <code>disagreement_checked=false</code> and <code>retrieval_disagreement=null</code>
+            — never treated as agreement. Deterministic length / placeholder / absolute-claim
+            checks remain as <strong>non-blended</strong> diagnostic flags + confidence penalty.</p>
+          <div class="chips"><span class="chip">faithfulness</span><span class="chip">answer relevancy</span><span class="chip">context precision</span><span class="chip">disagreement sample</span></div>
+        </div>
+      </div>
+
+      <div class="stage gate-stage rise">
+        <div class="num">09</div>
+        <div class="stage-body">
+          <p class="stage-tag">control system</p>
+          <h3>Router decision <span class="badge gate">hard gates</span></h3>
+          <p><code>src/router.py · route_email()</code> — confidence =
+            <code>clamp(quality_score × 100 − deterministic_penalty, 0, 100)</code>.</p>
+          <div class="formula">
+            NEVER AUTO if: faithfulness &lt; FAITHFULNESS_GATE (default 0.7)<br>
+            OR retrieval_disagreement == true<br>
+            OR scoring_error<br>
+            OR any deterministic flag
+          </div>
+          <p><strong>ESCALATE</strong> if <code>remedy.escalate</code> or confidence &lt; T2
+            (default 50). <strong>AUTO</strong> if confidence ≥ T1 (default 80) and all gates
+            pass. Else <strong>REVIEW</strong>. <strong>IGNORE</strong> when classifier said
+            <code>other</code>. A fraction of AUTO items are hash-sampled for audit
+            (<code>audit_sample_rate</code>, default 5%). <em>AUTO never auto-sends</em> —
+            it only queues a pre-approved draft.</p>
+          <div class="chips"><span class="chip">AUTO · REVIEW · ESCALATE · IGNORE</span><span class="chip">t1 / t2</span><span class="chip">audit sample</span></div>
+        </div>
+      </div>
+
+      <div class="stage store-stage rise">
+        <div class="num">10</div>
+        <div class="stage-body">
+          <p class="stage-tag">queue · StructuredStore</p>
+          <h3>Persist to review queue <span class="badge store">persist</span></h3>
+          <p><code>src/queue_store.py · upsert()</code> — priority-sorted queue
+            (escalate &gt; review &gt; auto, plus order value + frustration). Dedupes on
+            <code>email_id</code>; never clobbers human statuses
+            (<code>sent</code> / <code>simulated</code> / <code>dismissed</code> on re-route.
+            Optional <code>notify.send_digest()</code> after sync when digest is enabled.</p>
+          <div class="chips"><span class="chip">table: queue</span><span class="chip">priority sort</span><span class="chip">notify digest</span></div>
+        </div>
+      </div>
+
+      <div class="stage store-stage rise">
+        <div class="num">11</div>
+        <div class="stage-body">
+          <p class="stage-tag">Tier 2 · human</p>
+          <h3>Review actions → feedback <span class="badge store">persist</span></h3>
+          <p><code>api.py</code> (Review page) + <code>src/feedback.py</code> — Send / edit /
+            dismiss / flag hallucination / confirm escalation audit. On Send,
+            <code>classify_send_label()</code> diffs the structured remedy: unchanged →
+            <code>ACCEPTED_AS_IS</code>; remedy field change → <code>EDITED_MAJOR</code>;
+            wording-only → <code>EDITED_MINOR</code>. Labels also include
+            <code>REJECTED</code>, <code>ESCALATED_CORRECTLY</code>,
+            <code>ESCALATED_MISSED</code>, <code>FLAGGED_HALLUCINATION</code>. Append-only
+            rows in <code>feedback_events</code>. Send goes through
+            <code>send_reply(dry_run=not live_send)</code>.</p>
+          <div class="chips"><span class="chip">table: feedback_events</span><span class="chip">remedy diff</span><span class="chip">dry-run default</span></div>
+        </div>
+      </div>
+
+      <div class="stage store-stage rise">
+        <div class="num">12</div>
+        <div class="stage-body">
+          <p class="stage-tag">Tier 2 · reliability</p>
+          <h3>Reliability &amp; Evaluation UI</h3>
+          <p><code>src/reliability.py</code> / <code>src/validate_metric.py</code> /
+            Evaluation page — two unblended panels. Critical error rate uses
+            <strong>only human-labeled AUTO</strong> as denominator; audit coverage is
+            reported separately. Every rate carries <code>n</code> + Wilson 95% CI;
+            <code>n &lt; 20</code> → insufficient data. Calibration buckets RAGAS
+            <code>quality_score</code> deciles against real acceptance.</p>
+          <div class="formula">
+            critical_error_rate =<br>
+            count(EDITED_MAJOR | REJECTED | ESCALATED_MISSED | FLAGGED_HALLUCINATION<br>
+            &nbsp;&nbsp;∧ routing_decision == AUTO ∧ labeled)<br>
+            / count(routing_decision == AUTO ∧ labeled)
+          </div>
+          <div class="chips"><span class="chip">Wilson CI</span><span class="chip">audit coverage</span><span class="chip">calibration</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== STORAGE ========== -->
+  <section class="cross">
+    <p class="section-h">Cross-cutting</p>
+    <h2 class="section-t">Storage, gates, and design rules</h2>
+    <div class="cross-grid">
+      <div class="cc rise">
+        <div class="k">Storage</div>
+        <h4>Pluggable StructuredStore + BlobStore</h4>
+        <p>Default local SQLite + filesystem (<code>src/storage/</code>). Opt-in Postgres /
+          S3 / Azure / GCS from Settings. Company source files are uploaded via Settings
+          and versioned under <code>company/</code> in BlobStore; operational data (queue,
+          feedback, scores, index cache) goes through the adapters. Nothing outside
+          <code>src/storage/</code> imports
+          <code>sqlite3</code> / <code>boto3</code> / Azure / GCS SDKs.</p>
+      </div>
+      <div class="cc rise" style="animation-delay:.04s">
+        <div class="k">Fail closed</div>
+        <h4>Scoring errors never AUTO</h4>
+        <p>RAGAS / scoring failures set <code>scoring_error</code> and gate AUTO → REVIEW.
+          Disagreement unchecked ≠ agreement. No hand-labeled answer key; no synthetic
+          control replies.</p>
+      </div>
+      <div class="cc rise" style="animation-delay:.08s">
+        <div class="k">Data leakage</div>
+        <h4>Holdout never retrievable</h4>
+        <p><code>TicketRetriever</code> fits only on <code>split=="corpus"</code>.
+          <code>user_examples</code> are live-UI only. No pre-written correct-answer file
+          for any ticket.</p>
+      </div>
+      <div class="cc rise" style="animation-delay:.12s">
+        <div class="k">Company-agnostic</div>
+        <h4>Everything company-specific is uploaded</h4>
+        <p>Activate a policy document, transactions export, and optional ticket history
+          through Settings — zero code changes. Sample fixtures live under
+          <code>tests/fixtures/northpeak/</code>; demo files are not shipped under
+          <code>data/</code>. No hardcoded rule IDs, product names, or remedies in
+          <code>src/</code>, prompts, or the router.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>hiver-challenge · architecture as implemented 2026-07-26</span>
+    <span>open this file locally · mermaid renders in the browser</span>
+  </footer>
+</div>
+<script>mermaid.initialize({startOnLoad:true,securityLevel:"loose"});</script>
+</body>
+</html>

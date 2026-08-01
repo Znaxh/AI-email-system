@@ -1,0 +1,122 @@
+[
+  {
+    "ticket_id": "T01", "order_id": "ORD-1001", "category": "return_in_window", "split": "corpus", "sentiment": "polite",
+    "incoming_email": "Hi there, I bought the Trail Runner Shoes (order ORD-1001) but they're half a size too small. I've only tried them on indoors and they're still in the box. Delivery was about three weeks ago. Can I return them for a refund? Thanks, Priya",
+    "actual_reply": "Hi Priya, thanks for reaching out! Since your Trail Runner Shoes arrived within the last 30 days and are unworn, you're fully covered by our standard return policy. I've emailed you a prepaid return label for order ORD-1001 — once the shoes are scanned by the carrier, we'll issue a full refund of $89.00 to your original payment method (usually 3-5 business days). If you'd rather swap for the right size, just reply and I'll set up an exchange instead. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T02", "order_id": "ORD-1002", "category": "return_out_of_window", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hello, I'd like to return the Merino Base Layer from order ORD-1002. It doesn't fit the way I hoped. I got it back in late April — is a refund still possible? Best, Daniel",
+    "actual_reply": "Hi Daniel, thanks for checking in. Your Merino Base Layer was delivered a little over two months ago, which puts it past our 30-day full-refund window but still inside the 90-day extended window. That means I can offer you store credit for the full $54.00 rather than a cash refund. If that works, I'll send over a prepaid return label right away, and the credit will land in your account as soon as the item ships back. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T03", "order_id": "ORD-1003", "category": "return_final_sale", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hi, I want to return the Summit Softshell Jacket, order ORD-1003. The color looks different in person than online. How do I send it back? — Alex",
+    "actual_reply": "Hi Alex, thanks for getting in touch, and I'm sorry the color wasn't what you expected. I have to be upfront with you: the Summit Softshell Jacket was purchased as a final-sale item, and final-sale purchases aren't eligible for return, refund, or store credit — it's one of the few policies we can't make exceptions to. What I can do is help in other ways: our product photos team appreciates this kind of feedback, and I'm happy to answer any styling or care questions about the jacket. Sorry I don't have better news here. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T04", "order_id": "ORD-1004", "category": "return_expired", "split": "corpus", "sentiment": "polite",
+    "incoming_email": "Hello NorthPeak, I have a Camp Stove from order ORD-1004 that I never ended up using — it's still sealed in the packaging. I know it's been a while (I got it in February) but I was hoping I could still return it? — Sam",
+    "actual_reply": "Hi Sam, thanks for reaching out, and I appreciate you being upfront about the timing. Unfortunately your Camp Stove was delivered in mid-February, which is more than 90 days ago, and that's past the point where we can accept a return — even for unopened items, we can't offer a refund or store credit at this stage. If the stove isn't going to get used, donating it to a local scout troop or gear library is a great option, and I'm sorry I can't do more here. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T05", "order_id": "ORD-1005", "category": "shipping_delay", "split": "corpus", "sentiment": "frustrated",
+    "incoming_email": "My Sleeping Pad (ORD-1005) was supposed to arrive June 19 and it didn't show up until June 30. I had to borrow a pad for my trip. This is really disappointing — what are you going to do about it? — Marcus",
+    "actual_reply": "Hi Marcus, I'm really sorry — missing gear right before a trip is exactly the situation we try to prevent, and an 11-day delay is well beyond acceptable. Since your Sleeping Pad arrived more than 5 business days after the promised date, I've applied a $10 shipping credit to your account (the shipping fee on ORD-1005), effective immediately. I've also flagged this delivery with our carrier team so we can chase down what went wrong. Thanks for your patience, and I hope the borrowed pad held up. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T06", "order_id": "ORD-1006", "category": "lost_package", "split": "corpus", "sentiment": "frustrated",
+    "incoming_email": "It's been over two weeks and my Headlamp from order ORD-1006 never arrived. The tracking has said 'in transit' forever and now the carrier told me on the phone that the package is officially lost. I want this sorted out. — Nina",
+    "actual_reply": "Hi Nina, I'm so sorry about this — you're right, the carrier has confirmed the package for ORD-1006 as lost, so there's no need to wait any longer. You get to choose how we make it right: I can send a free replacement Headlamp with expedited shipping today, or issue a full refund of $32.00 to your original payment method. Just reply with whichever you prefer and I'll process it within the hour. Again, apologies for the wait. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T07", "order_id": "ORD-1007", "category": "damaged_in_transit", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hi, my Trekking Poles arrived today (order ORD-1007) but the box was crushed and one of the poles is bent near the locking mechanism. What should I do? — Wei",
+    "actual_reply": "Hi Wei, I'm sorry your Trekking Poles took a beating in transit — that's on the shipping journey, not on you. I've set up a free replacement pair for ORD-1007, shipping out today with tracking to follow by email. And here's the easy part: you don't need to return the damaged set. Feel free to recycle it or keep the intact pole as a spare. If the replacement isn't perfect when it lands, reply here and I'll jump straight on it. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T08", "order_id": "ORD-1008", "category": "cancel_before_ship", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hi, I ordered a Down Sleeping Bag yesterday (ORD-1008) but I just found out my trip is cancelled. Can I cancel the order before it ships? Will there be a fee? — Jordan",
+    "actual_reply": "Hi Jordan, no problem at all. Order ORD-1008 hadn't shipped yet, so I've cancelled it and issued a full refund of $189.00 to your original payment method — no cancellation or processing fee, ever, for pre-shipment cancellations. You should see the refund in 3-5 business days depending on your bank. Sorry to hear about the trip, and we'll be here when the next one comes together. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T09", "order_id": "ORD-1009", "category": "cancel_after_ship", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hello, I need to cancel order ORD-1009 (the Daypack 28L). I see it already shipped this morning — can you stop it or recall it from the carrier? — Fatima",
+    "actual_reply": "Hi Fatima, thanks for the quick heads-up. Once a package is with the carrier we're not able to intercept or recall it, so the Daypack will still arrive. The good news: you can treat this as a standard return. When it lands, just don't open it — reply here and I'll send a prepaid return label, and because you'll be well inside the 30-day window you'll receive a full refund of $95.00 once the carrier scans the return. Sorry we couldn't catch it in time. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T10", "order_id": "ORD-1010", "category": "warranty_defect", "split": "corpus", "sentiment": "polite",
+    "incoming_email": "Hi team, the lid gasket on my Insulated Water Bottle (order ORD-1010, bought last October) has split along the seam and it leaks everywhere. I've hand-washed it and never dropped it. Is this covered? — Rosa",
+    "actual_reply": "Hi Rosa, thanks for the details — a gasket splitting along the seam under normal care is a manufacturing defect, and since your bottle was delivered about nine months ago it's well within our 1-year warranty. I've set up a free replacement bottle for ORD-1010; it ships this week and there's nothing to send back. If the same issue ever shows up on the replacement, let us know and we'll take another look. Happy trails! — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T11", "order_id": "ORD-1011", "category": "warranty_misuse", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hi, my Ridgeline 2P Tent (ORD-1011) has two broken poles and a torn fly. Honestly, I backed my car over the stuff sack at the trailhead — totally my fault, but I figured I'd ask if warranty covers any of it. — Tom",
+    "actual_reply": "Hi Tom, thanks for the honesty — that's a rough morning at the trailhead. I have to be straight with you: damage from accidents like this isn't covered by our warranty, which only applies to manufacturing defects, so I can't offer a free replacement here. What I can do is send you a one-time 15% discount code toward a replacement tent (or any other gear), which I've attached to your account. Pole repair sleeves from our parts shop might also get the tent limping along for car-camping duty. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T12", "order_id": "ORD-1012", "category": "duplicate_charge", "split": "corpus", "sentiment": "frustrated",
+    "incoming_email": "I was charged TWICE for order ORD-1012 (the Fleece Pullover) — two charges of $49 on my statement, same day. Please fix this immediately. — Grace",
+    "actual_reply": "Hi Grace, you're absolutely right and I'm sorry for the alarm — our billing system confirms a duplicate charge of $49.00 on ORD-1012. I've refunded the duplicate in full just now; it should appear back on your statement within 3-5 business days depending on your bank. Your order itself is unaffected and the pullover is on its way. Thanks for flagging it so quickly, and apologies again for the hassle. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T13", "order_id": "ORD-1014", "category": "price_match_granted", "split": "corpus", "sentiment": "polite",
+    "incoming_email": "Hi! I bought Hiking Boots five days ago (order ORD-1014) for $139 and I just saw them for $119 at Summit Outfitters, which I believe is one of your authorized retailers. Do you price match? — Leo",
+    "actual_reply": "Hi Leo, good eye! You're within our 7-day price-match window and Summit Outfitters is indeed on our authorized retailer list, so this one's easy: I've refunded the $20.00 difference on ORD-1014 to your original payment method. You'll see it within 3-5 business days. Enjoy the boots — that's a great price for them. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T14", "order_id": "ORD-1015", "category": "price_match_denied", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hello, I noticed my Rain Shell (order ORD-1015, bought about five weeks ago) is now listed for $79 on a marketplace seller's page. Can you match that and refund the difference? — Ingrid",
+    "actual_reply": "Hi Ingrid, thanks for asking. I checked, and unfortunately this request falls outside our price-match policy on two counts: matches are only available within 7 days of purchase (your order was about five weeks ago), and marketplace listings from non-authorized sellers aren't eligible even inside that window. So I'm not able to refund the difference here. If it helps, joining our newsletter gets you early access to our own seasonal markdowns. Sorry I can't do more this time. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T15", "order_id": "ORD-1018", "category": "return_worn_item", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hi, I'd like to return the Wool Socks 3-Pack from ORD-1018. I've worn each pair a couple of times but they're itchier than I expected. It's only been about two weeks. — Pat",
+    "actual_reply": "Hi Pat, thanks for the honest description. You're inside the 30-day window, but our full-refund policy only covers items that are unworn and in original condition — and worn socks are one place we have to hold that line for hygiene reasons, so I can't offer a refund on ORD-1018. For the itch: washing merino blends with a wool-specific detergent and skipping the dryer softens them up a lot. If you try that and they're still not working, reply and I'll see what goodwill options I have. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T16", "order_id": "ORD-1020", "category": "shipping_delay_minor", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hi, my Ultralight Quilt (ORD-1020) was promised for June 16 but arrived June 18. Not a huge deal, but do I get any compensation for the late delivery? — Omar",
+    "actual_reply": "Hi Omar, thanks for flagging it, and sorry the quilt ran a little behind. I checked ORD-1020: it arrived 2 business days after the promised date, and our shipping-credit policy kicks in only for delays of more than 5 business days, so this one doesn't qualify for compensation. I have logged the late delivery against the carrier's scorecard, though — that data genuinely shapes who we ship with. Enjoy the quilt! — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T17", "order_id": "ORD-1017", "category": "lost_package_unconfirmed", "split": "corpus", "sentiment": "frustrated",
+    "incoming_email": "My Snow Goggles (order ORD-1017) were supposed to arrive June 26 and the tracking hasn't moved in days. I'm pretty sure the package is lost. I want a refund or a new pair sent out today. — Derek",
+    "actual_reply": "Hi Derek, I completely understand the frustration — stalled tracking is maddening. Here's where things stand: the carrier hasn't yet confirmed the package as lost, and until they do I'm not able to promise a refund or replacement. What I've done right now is open an official carrier trace on ORD-1017, which forces a physical search and a definitive answer, usually within 2-3 business days. The moment the carrier confirms a loss, you'll get your choice of a free replacement or a full refund. I'll follow up as soon as the trace comes back. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "T18", "order_id": "ORD-1013", "category": "escalation_high_value", "split": "corpus", "sentiment": "neutral",
+    "incoming_email": "Hello, I'd like to return the Alpine 3-Season Tent from order ORD-1013. It arrived two weeks ago and I've only set it up once in the living room — it's just bigger than I need. Can I get a refund? — Chloe",
+    "actual_reply": "Hi Chloe, thanks for reaching out. Your return looks straightforward on the surface, but because the tent's value ($249.00) is above our $200 threshold, our policy requires a senior agent to review and approve it rather than having it resolved automatically. I've escalated ORD-1013 with all your details, and a senior teammate will confirm the next steps within 1 business day — given what you've described, I expect it to be a smooth approval. Thanks for your patience with the extra step. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "H01", "order_id": "ORD-1021", "category": "return_in_window", "split": "holdout", "sentiment": "frustrated",
+    "incoming_email": "This is the second time I've written with no response. I ordered a Down Vest (ORD-1021) that arrived June 27 and it's the wrong color entirely — I ordered navy and got olive. It's still got the tags on. I want my money back, not a runaround. — Victor",
+    "actual_reply": "Hi Victor, I'm sorry — you shouldn't have had to write twice, and receiving the wrong color on top of that is genuinely frustrating. This is an easy yes: your Down Vest arrived within the last 30 days with tags still on, so you're fully covered for a refund. I've emailed a prepaid return label for ORD-1021, and the full $88.00 goes back to your original payment method as soon as the carrier scans the package. If you'd like the navy vest you actually ordered, say the word and I'll ship it with free expedited shipping. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "H02", "order_id": "ORD-1022", "category": "return_final_sale", "split": "holdout", "sentiment": "polite",
+    "incoming_email": "Hi NorthPeak, I bought the Softshell Pants (order ORD-1022) as a birthday gift for my dad, but I got his size wrong and they don't fit him. They've never been worn. I know I bought them on sale — is there any way to exchange or return them? He'd love the right size. — Hannah",
+    "actual_reply": "Hi Hannah, thank you for the kind note, and I wish I had better news. The Softshell Pants on ORD-1022 were purchased as a final-sale item, and final-sale purchases aren't eligible for return, exchange, or store credit — it's a firm policy we're not able to make exceptions to, even for unworn gift sizing situations like yours, which I know feels harsh. If your dad would like the right size, the pants are still available in our current lineup, and many customers in your spot gift or resell the original pair. I'm sorry I can't do more here. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "H03", "order_id": "ORD-1023", "category": "damaged_in_transit", "split": "holdout", "sentiment": "frustrated",
+    "incoming_email": "My Camp Cookset from order ORD-1023 arrived with the pot dented and the pan handle snapped clean off — the box looked like it had been dropped off a truck. I don't want to deal with a return process, just refund me. — Aisha",
+    "actual_reply": "Hi Aisha, I'm sorry the cookset arrived in that state — that's clearly transit damage and none of it is on you. Here's the good news: there is no return process for you at all. Our policy for transit damage is a free replacement, so I've dispatched a brand-new Camp Cookset for ORD-1023 today, and you can toss or recycle the damaged one. Our standard remedy for transit damage is the replacement rather than a refund, so I've set that in motion — but if you'd truly rather not have the cookset at all, reply and I'll ask about declining the replacement in favor of a refund. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "H04", "order_id": "ORD-1016", "category": "escalation_frequent_returner", "split": "holdout", "sentiment": "neutral",
+    "incoming_email": "Hi, I'd like to return the Climbing Harness from order ORD-1016. It arrived June 29, it's unused with tags attached, and it just doesn't fit over my winter layers. Please send a return label. — Ryan",
+    "actual_reply": "Hi Ryan, thanks for the clear details — the harness itself is well inside the 30-day window. One extra step applies here: our system shows several recent returns on your account, and our policy asks us to route any new return through a quick manual review before approval in that situation. I've submitted ORD-1016 for that review with a note that the harness is unused with tags attached, and you'll hear back from our reviews team within 1-2 business days with the return label if approved. Thanks for bearing with the extra step. — Jonah, NorthPeak Support"
+  },
+  {
+    "ticket_id": "H05", "order_id": "ORD-1019", "category": "escalation_high_value", "split": "holdout", "sentiment": "neutral",
+    "incoming_email": "Hello, I placed an order yesterday for the Expedition Duffel 90L (ORD-1019) but I've decided to go with a different bag. It hasn't shipped yet according to my account page. Please cancel it and refund me. — Elena",
+    "actual_reply": "Hi Elena, thanks for catching it before shipment — that's the easiest time to cancel. One note on process: because the duffel's value ($220.00) is above our $200 threshold, policy requires a senior agent to sign off rather than my resolving it automatically. I've paused the order so it will not ship, and escalated the cancellation for ORD-1019 with a recommendation to approve the full, fee-free refund that pre-shipment cancellations receive. You'll have confirmation within 1 business day. — Maya, NorthPeak Support"
+  },
+  {
+    "ticket_id": "H06", "order_id": "ORD-1024", "category": "duplicate_charge_unconfirmed", "split": "holdout", "sentiment": "frustrated",
+    "incoming_email": "I'm seeing TWO charges of $36 from you on my banking app for order ORD-1024 (Trail Gaiters). I only ordered once. This needs to be refunded today or I'm disputing both charges with my bank. — Miguel",
+    "actual_reply": "Hi Miguel, I understand the urgency — seeing a double charge is alarming, and I've made this my next priority. Here's the honest picture: one $36.00 charge for ORD-1024 has settled on our side, and the second appears as a pending authorization that our billing system hasn't yet confirmed as an actual duplicate charge. Pending authorizations often drop off on their own within a few days, but I'm not leaving it to chance: I've opened a billing investigation right now, and you'll have a definitive answer within 2 business days. If it confirms as a duplicate, the refund is immediate and in full. Holding off on the bank dispute until then will keep the refund path fastest. — Jonah, NorthPeak Support"
+  }
+]
